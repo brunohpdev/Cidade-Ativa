@@ -7,17 +7,8 @@ import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Cadastro from "./pages/Cadastro";
-
-function EmConstrucao() {
-  return (
-    <main className="auth-container">
-      <div className="auth-card">
-        <h1>Página em desenvolvimento</h1>
-        <p>Esta funcionalidade será implementada em breve.</p>
-      </div>
-    </main>
-  );
-}
+import Chamados from "./pages/Chamados";
+import DetalhesChamado from "./pages/DetalhesChamado";
 
 function App() {
   return (
@@ -28,13 +19,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/cadastro" element={<Cadastro />} />
-
-        <Route path="/chamados" element={<EmConstrucao />} />
-        <Route path="/meus-chamados" element={<EmConstrucao />} />
-        <Route path="/painel-agente" element={<EmConstrucao />} />
-        <Route path="/administracao" element={<EmConstrucao />} />
-
-        <Route path="*" element={<EmConstrucao />} />
+        <Route path="/chamados" element={<Chamados />} />
+        <Route path="/chamados/:id" element={<DetalhesChamado />} />
       </Routes>
 
       <Footer />
