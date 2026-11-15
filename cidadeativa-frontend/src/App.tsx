@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Cadastro from "./pages/Cadastro";
 import Chamados from "./pages/Chamados";
+import DetalhesChamado from "./pages/DetalhesChamado";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/cadastro" element={<Cadastro />} />
         <Route path="/chamados" element={<Chamados />} />
+        <Route path="/chamados/:id" element={<DetalhesChamado />} />
       </Routes>
 
       <Footer />
