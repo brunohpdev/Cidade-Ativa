@@ -10,11 +10,13 @@ import {
 } from "lucide-react";
 
 import { api } from "../services/api";
+
 import type {
   Chamado,
   Categoria,
   Regiao
-} from "../types/Chamado.ts";
+} from "../types/Chamado";
+
 function Chamados() {
   const [chamados, setChamados] = useState<Chamado[]>([]);
   const [categorias, setCategorias] = useState<Categoria[]>([]);
@@ -23,6 +25,7 @@ function Chamados() {
   const [categoria, setCategoria] = useState("");
   const [regiao, setRegiao] = useState("");
   const [status, setStatus] = useState("");
+  const [protocolo, setProtocolo] = useState("");
 
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
@@ -32,12 +35,15 @@ function Chamados() {
     setErro("");
 
     try {
-      const [listaChamados, listaCategorias, listaRegioes] =
-        await Promise.all([
-          api("/api/chamados"),
-          api("/api/categorias"),
-          api("/api/regioes")
-        ]);
+      const [
+        listaChamados,
+        listaCategorias,
+        listaRegioes
+      ] = await Promise.all([
+        api("/api/chamados"),
+        api("/api/categorias"),
+        api("/api/regioes")
+      ]);
 
       setChamados(listaChamados);
       setCategorias(listaCategorias);
@@ -66,21 +72,33 @@ function Chamados() {
       (r) => r.cdRegiao === id
     );
 
-    if (!item) return "Não informada";
+    if (!item) {
+      return "Não informada";
+    }
 
     return `${item.nmBairro} - ${item.nmCidade}`;
   }
 
   function nomeStatus(valor: string) {
-    if (valor === "ABERTO") return "Aberto";
-    if (valor === "EM_ANDAMENTO") return "Em andamento";
-    if (valor === "RESOLVIDO") return "Resolvido";
+    if (valor === "ABERTO") {
+      return "Aberto";
+    }
+
+    if (valor === "EM_ANDAMENTO") {
+      return "Em andamento";
+    }
+
+    if (valor === "RESOLVIDO") {
+      return "Resolvido";
+    }
 
     return valor;
   }
 
   function formatarData(data: string | null) {
-    if (!data) return "Não informada";
+    if (!data) {
+      return "Não informada";
+    }
 
     const dataFormatada = new Date(data);
 
@@ -91,6 +109,7 @@ function Chamados() {
     return dataFormatada.toLocaleDateString("pt-BR");
   }
 
+  // FILTROS DOS CHAMADOS
   const chamadosFiltrados = chamados.filter((chamado) => {
     const filtroCategoria =
       !categoria ||
@@ -101,23 +120,46 @@ function Chamados() {
       chamado.cdRegiao === Number(regiao);
 
     const filtroStatus =
-      !status || chamado.stChamado === status;
+      !status ||
+      chamado.stChamado === status;
 
-    return filtroCategoria && filtroRegiao && filtroStatus;
+    const filtroProtocolo =
+      !protocolo.trim() ||
+      chamado.nrProtocolo
+        .toLowerCase()
+        .includes(protocolo.trim().toLowerCase());
+
+    return (
+      filtroCategoria &&
+      filtroRegiao &&
+      filtroStatus &&
+      filtroProtocolo
+    );
   });
+
+  function limparFiltros() {
+    setCategoria("");
+    setRegiao("");
+    setStatus("");
+    setProtocolo("");
+  }
 
   return (
     <main className="chamados-container">
       <section className="chamados-topo">
         <div>
           <h1>Chamados da cidade</h1>
+
           <p>
             Acompanhe os problemas urbanos registrados
             e o andamento das ocorrências.
           </p>
         </div>
 
-        <Link to="/novo-chamado" className="btn btn-primary">
+        <Link
+          to="/novo-chamado"
+          className="btn btn-primary"
+        >
           Registrar problema
         </Link>
       </section>
@@ -130,13 +172,18 @@ function Chamados() {
 
         <div className="filtros-grid">
           <div>
-            <label htmlFor="categoria">Categoria</label>
+            <label htmlFor="categoria">
+              Categoria
+            </label>
+
             <select
               id="categoria"
               value={categoria}
               onChange={(e) => setCategoria(e.target.value)}
             >
-              <option value="">Todas as categorias</option>
+              <option value="">
+                Todas as categorias
+              </option>
 
               {categorias.map((item) => (
                 <option
@@ -150,13 +197,18 @@ function Chamados() {
           </div>
 
           <div>
-            <label htmlFor="regiao">Região</label>
+            <label htmlFor="regiao">
+              Região
+            </label>
+
             <select
               id="regiao"
               value={regiao}
               onChange={(e) => setRegiao(e.target.value)}
             >
-              <option value="">Todas as regiões</option>
+              <option value="">
+                Todas as regiões
+              </option>
 
               {regioes.map((item) => (
                 <option
@@ -170,21 +222,60 @@ function Chamados() {
           </div>
 
           <div>
-            <label htmlFor="status">Status</label>
+            <label htmlFor="status">
+              Status
+            </label>
+
             <select
               id="status"
               value={status}
               onChange={(e) => setStatus(e.target.value)}
             >
-              <option value="">Todos os status</option>
-              <option value="ABERTO">Aberto</option>
+              <option value="">
+                Todos os status
+              </option>
+
+              <option value="ABERTO">
+                Aberto
+              </option>
+
               <option value="EM_ANDAMENTO">
                 Em andamento
               </option>
-              <option value="RESOLVIDO">Resolvido</option>
+
+              <option value="RESOLVIDO">
+                Resolvido
+              </option>
             </select>
           </div>
         </div>
+
+        {/* PESQUISA POR PROTOCOLO */}
+        <div className="pesquisa-protocolo">
+          <label htmlFor="protocolo">
+            Pesquisar por protocolo
+          </label>
+
+          <div className="pesquisa-input">
+            <Search size={20} />
+
+            <input
+              id="protocolo"
+              type="text"
+              placeholder="Digite o protocolo do chamado"
+              value={protocolo}
+              onChange={(e) => setProtocolo(e.target.value)}
+            />
+          </div>
+        </div>
+
+        <button
+          type="button"
+          className="btn-limpar"
+          onClick={limparFiltros}
+        >
+          Limpar filtros
+        </button>
       </section>
 
       <section className="lista-chamados">
@@ -192,6 +283,7 @@ function Chamados() {
           <h2>Ocorrências registradas</h2>
 
           <button
+            type="button"
             className="btn-atualizar"
             onClick={carregarDados}
             disabled={carregando}
@@ -208,7 +300,11 @@ function Chamados() {
         {erro && !carregando && (
           <div className="mensagem-erro">
             <p>{erro}</p>
-            <button onClick={carregarDados}>
+
+            <button
+              type="button"
+              onClick={carregarDados}
+            >
               Tentar novamente
             </button>
           </div>
@@ -223,10 +319,12 @@ function Chamados() {
             {chamadosFiltrados.length === 0 ? (
               <div className="lista-vazia">
                 <ClipboardList size={40} />
+
                 <h3>Nenhum chamado encontrado</h3>
+
                 <p>
-                  Não existem ocorrências para os
-                  filtros selecionados.
+                  Não existem ocorrências para
+                  os filtros selecionados.
                 </p>
               </div>
             ) : (
