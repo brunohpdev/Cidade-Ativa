@@ -4,28 +4,29 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
+// Paginas principais
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Cadastro from "./pages/Cadastro";
+
+// Paginas publicas
 import Chamados from "./pages/Chamados";
 import DetalhesChamado from "./pages/DetalhesChamado";
 
+// Paginas do cidadao
 import NovoChamado from "./pages/NovoChamado";
 import MeusChamados from "./pages/MeusChamados";
 import EditarChamado from "./pages/EditarChamado";
 
-function EmConstrucao() {
-  return (
-    <main className="auth-container">
-      <div className="auth-card">
-        <h1>Página em desenvolvimento</h1>
-        <p>
-          Esta funcionalidade será implementada em breve.
-        </p>
-      </div>
-    </main>
-  );
-}
+// Paginas do agente
+import PainelAgente from "./pages/PainelAgente";
+import MeusAtendimentos from "./pages/MeusAtendimentos";
+import ResolverChamado from "./pages/ResolverChamado";
+
+// Paginas do administrador
+import Administracao from "./pages/Administracao";
+import AdminCategorias from "./pages/AdminCategorias";
+import AdminRegioes from "./pages/AdminRegioes";
 
 function App() {
   return (
@@ -33,51 +34,74 @@ function App() {
       <Header />
 
       <Routes>
-        {/* PÁGINAS PRINCIPAIS */}
+        {/* Paginas principais */}
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/cadastro" element={<Cadastro />} />
 
-        {/* CONSULTA PÚBLICA DE CHAMADOS */}
+        {/* Consulta publica */}
         <Route path="/chamados" element={<Chamados />} />
+
         <Route
           path="/chamados/:id"
           element={<DetalhesChamado />}
         />
 
-        {/* FUNCIONALIDADES DO CIDADÃO */}
+        {/* Area do cidadao */}
         <Route
           path="/novo-chamado"
           element={<NovoChamado />}
         />
+
         <Route
           path="/meus-chamados"
           element={<MeusChamados />}
         />
+
         <Route
           path="/editar-chamado/:id"
           element={<EditarChamado />}
         />
 
-        {/* FUNCIONALIDADES FUTURAS */}
+        {/* Area do agente publico */}
         <Route
           path="/painel-agente"
-          element={<EmConstrucao />}
-        />
-        <Route
-          path="/administracao"
-          element={<EmConstrucao />}
+          element={<PainelAgente />}
         />
 
-        {/* PÁGINAS NÃO ENCONTRADAS */}
+        <Route
+          path="/meus-atendimentos"
+          element={<MeusAtendimentos />}
+        />
+
+        <Route
+          path="/resolver-chamado/:id"
+          element={<ResolverChamado />}
+        />
+
+        {/* Area administrativa */}
+        <Route
+          path="/administracao"
+          element={<Administracao />}
+        />
+
+        <Route
+          path="/admin/categorias"
+          element={<AdminCategorias />}
+        />
+
+        <Route
+          path="/admin/regioes"
+          element={<AdminRegioes />}
+        />
+
+        {/* Pagina nao encontrada */}
         <Route
           path="*"
           element={
-            <main className="auth-container">
-              <div className="auth-card">
-                <h1>Página não encontrada</h1>
-                <p>O endereço informado não existe.</p>
-              </div>
+            <main className="ca-pagina">
+              <h1>Pagina nao encontrada</h1>
+              <p>O endereco informado nao existe.</p>
             </main>
           }
         />
