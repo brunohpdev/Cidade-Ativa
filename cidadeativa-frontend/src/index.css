@@ -611,3 +611,22 @@ button:disabled {
   }
 }
 
+
+/* BOTÕES DO HEADER */
+
+.menu button {
+  font-family: inherit;
+  font-size: 15px;
+}
+
+.menu .btn-outline {
+  background: transparent;
+  border: 1px solid #087f70;
+  color: #087f70;
+}
+
+.menu .btn-outline:hover {
+  background: #e8f7f3;
+}
+
+
