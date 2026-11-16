@@ -1,74 +1,97 @@
 
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { Building2, LogOut } from "lucide-react";
-import { useState } from "react";
-
-import { obterCidadao, sair } from "../services/sessao";
-import type { Usuario } from "../types/Usuario";
+import { obterUsuario } from "../services/usuarioLogado";
 
 function Header() {
   const navigate = useNavigate();
+  const usuario = obterUsuario();
 
-  const [usuario, setUsuario] = useState<Usuario | null>(
-    obterCidadao()
-  );
+  function sair() {
+    sessionStorage.removeItem("usuario");
 
-  function fazerLogout() {
-    sair();
-    setUsuario(null);
     navigate("/login");
+    window.location.reload();
   }
 
   return (
-    <header className="header">
-      <Link to="/" className="logo">
-        <Building2 size={28} />
-        <span>CidadeAtiva</span>
-      </Link>
+    <header className="ca-header">
+      <div className="ca-header-conteudo">
 
-      <nav className="menu">
-        <NavLink to="/" end>
-          Início
-        </NavLink>
+        {/* Logo */}
+        <Link to="/" className="ca-logo">
+          CidadeAtiva
+        </Link>
 
-        <NavLink to="/chamados">
-          Chamados
-        </NavLink>
+        {/* Navegacao */}
+        <nav className="ca-nav" aria-label="Menu principal">
 
-        {usuario ? (
-          <>
-            <NavLink to="/novo-chamado">
-              Registrar problema
+          <NavLink to="/">
+            Inicio
+          </NavLink>
+
+          <NavLink to="/chamados">
+            Chamados
+          </NavLink>
+
+          {/* Links do cidadao */}
+          {usuario?.tpUsuario === "CIDADAO" && (
+            <>
+              <NavLink to="/novo-chamado">
+                Abrir chamado
+              </NavLink>
+
+              <NavLink to="/meus-chamados">
+                Meus chamados
+              </NavLink>
+            </>
+          )}
+
+          {/* Links do agente */}
+          {usuario?.tpUsuario === "AGENTE" && (
+            <>
+              <NavLink to="/painel-agente">
+                Painel do agente
+              </NavLink>
+
+              <NavLink to="/meus-atendimentos">
+                Meus atendimentos
+              </NavLink>
+            </>
+          )}
+
+          {/* Link do administrador */}
+          {usuario?.tpUsuario === "ADMIN" && (
+            <NavLink to="/administracao">
+              Administracao
             </NavLink>
+          )}
 
-            <NavLink to="/meus-chamados">
-              Meus chamados
-            </NavLink>
+          {/* Visitante */}
+          {!usuario && (
+            <>
+              <NavLink to="/login">
+                Entrar
+              </NavLink>
 
+              <NavLink to="/cadastro">
+                Cadastrar
+              </NavLink>
+            </>
+          )}
+
+          {/* Usuario autenticado */}
+          {usuario && (
             <button
               type="button"
-              className="btn btn-outline"
-              onClick={fazerLogout}
+              className="ca-sair"
+              onClick={sair}
             >
-              <LogOut size={17} />
               Sair
             </button>
-          </>
-        ) : (
-          <>
-            <NavLink to="/login">
-              Entrar
-            </NavLink>
+          )}
 
-            <Link
-              to="/cadastro"
-              className="btn btn-primary"
-            >
-              Criar conta
-            </Link>
-          </>
-        )}
-      </nav>
+        </nav>
+      </div>
     </header>
   );
 }
