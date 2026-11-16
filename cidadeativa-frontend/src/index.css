@@ -564,3 +564,50 @@ button:disabled {
 }
 
 
+/* FORMULARIO DOS CHAMADOS */
+
+.formulario-chamado {
+  max-width: 650px;
+  margin: 50px auto;
+  padding: 35px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+}
+
+.formulario-chamado h1 {
+  color: #17324d;
+}
+
+.formulario-chamado label {
+  display: block;
+  font-weight: bold;
+  margin: 22px 0 8px;
+}
+
+.formulario-chamado input,
+.formulario-chamado select,
+.formulario-chamado textarea {
+  display: block;
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font: inherit;
+}
+
+.formulario-chamado textarea {
+  resize: vertical;
+}
+
+.formulario-chamado button {
+  margin-top: 26px;
+}
+
+@media (max-width: 768px) {
+  .formulario-chamado {
+    margin: 25px 15px;
+    padding: 22px;
+  }
+}
+
