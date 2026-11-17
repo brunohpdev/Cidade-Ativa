@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { api } from "../services/api";
 import type { Usuario } from "../types/Usuario";
+import { validarEmail, campoObrigatorio } from "../utils/validacoes";
 
 function Login() {
   const navigate = useNavigate();
@@ -15,22 +16,38 @@ function Login() {
   async function entrar(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setErro("");
+
+    // Validar e-mail
+    if (!validarEmail(email)) {
+      setErro("Digite um e-mail válido.");
+      return;
+    }
+
+    // Validar senha
+    if (!campoObrigatorio(senha)) {
+      setErro("Preencha a senha.");
+      return;
+    }
+
+    // Iniciar carregamento apenas apos validar
     setCarregando(true);
 
     try {
       const usuario: Usuario = await api("/api/auth/login", {
         method: "POST",
         body: JSON.stringify({
-          dsEmail: email,
+          dsEmail: email.trim(),
           dsSenha: senha,
         }),
       });
 
+      // Salvar usuario logado
       sessionStorage.setItem(
         "usuario",
         JSON.stringify(usuario)
       );
 
+      // Direcionar conforme o perfil
       if (usuario.tpUsuario === "AGENTE") {
         navigate("/painel-agente");
       } else if (usuario.tpUsuario === "ADMIN") {
@@ -38,6 +55,7 @@ function Login() {
       } else {
         navigate("/meus-chamados");
       }
+
     } catch {
       setErro("Não foi possível entrar. Confira seus dados.");
     } finally {
@@ -62,6 +80,7 @@ function Login() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
+          autoComplete="email"
         />
 
         <label htmlFor="senha">Senha</label>
@@ -72,9 +91,14 @@ function Login() {
           value={senha}
           onChange={(e) => setSenha(e.target.value)}
           required
+          autoComplete="current-password"
         />
 
-        {erro && <p className="erro">{erro}</p>}
+        {erro && (
+          <p className="erro" role="alert">
+            {erro}
+          </p>
+        )}
 
         <button
           className="btn btn-primary btn-full"
