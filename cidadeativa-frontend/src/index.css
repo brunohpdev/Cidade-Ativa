@@ -194,3 +194,26 @@
     padding: 30px 15px;
   }
 }
+
+/* Páginas de mensagem */
+
+.pagina-mensagem {
+  max-width: 700px;
+  margin: 80px auto;
+  padding: 30px;
+  text-align: center;
+}
+
+.pagina-mensagem h1 {
+  font-size: 36px;
+  margin-bottom: 15px;
+}
+
+.pagina-mensagem p {
+  margin: 20px 0;
+}
+
+.pagina-mensagem a {
+  display: inline-block;
+  margin-top: 15px;
+}
