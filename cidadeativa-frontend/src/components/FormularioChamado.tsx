@@ -2,6 +2,11 @@
 import { useEffect, useState } from "react";
 import { api } from "../services/api";
 
+import {
+  campoObrigatorio,
+  validarDescricao
+} from "../utils/validacoes";
+
 import type {
   CategoriaChamado,
   RegiaoChamado,
@@ -21,21 +26,26 @@ function FormularioChamado({
   inicial,
   onSalvar
 }: Props) {
+
   const [categorias, setCategorias] = useState<CategoriaChamado[]>([]);
   const [regioes, setRegioes] = useState<RegiaoChamado[]>([]);
 
   const [categoria, setCategoria] = useState(
     String(inicial?.cdCategoria ?? "")
   );
+
   const [regiao, setRegiao] = useState(
     String(inicial?.cdRegiao ?? "")
   );
+
   const [endereco, setEndereco] = useState(
     inicial?.dsEndereco ?? ""
   );
+
   const [descricao, setDescricao] = useState(
     inicial?.dsDescricao ?? ""
   );
+
   const [foto, setFoto] = useState(
     inicial?.dsFoto ?? ""
   );
@@ -44,6 +54,7 @@ function FormularioChamado({
   const [salvando, setSalvando] = useState(false);
   const [erro, setErro] = useState("");
 
+  // Carregar categorias e regioes da API
   useEffect(() => {
     let ativo = true;
 
@@ -63,7 +74,9 @@ function FormularioChamado({
           setErro("Erro ao carregar categorias e regiões.");
         }
       } finally {
-        if (ativo) setCarregando(false);
+        if (ativo) {
+          setCarregando(false);
+        }
       }
     }
 
@@ -74,13 +87,28 @@ function FormularioChamado({
     };
   }, []);
 
+  // Validar e enviar formulario
   async function enviar(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setErro("");
 
-    if (!categoria || !regiao ||
-        !endereco.trim() || !descricao.trim()) {
-      setErro("Preencha todos os campos obrigatórios.");
+    // Validar categoria e regiao
+    if (!categoria || !regiao) {
+      setErro("Selecione uma categoria e uma região.");
+      return;
+    }
+
+    // Validar endereco
+    if (!campoObrigatorio(endereco)) {
+      setErro("Informe o endereço da ocorrência.");
+      return;
+    }
+
+    // Validar descricao
+    if (!validarDescricao(descricao)) {
+      setErro(
+        "A descrição é obrigatória e deve ter até 1000 caracteres."
+      );
       return;
     }
 
@@ -110,12 +138,18 @@ function FormularioChamado({
         Os campos com * são obrigatórios.
       </p>
 
-      {erro && <p className="erro" role="alert">{erro}</p>}
+      {/* Mensagem de erro acessivel */}
+      {erro && (
+        <p className="erro" role="alert">
+          {erro}
+        </p>
+      )}
 
       {carregando ? (
-        <p>Carregando opções...</p>
+        <p role="status">Carregando opções...</p>
       ) : (
         <>
+          {/* Categoria */}
           <label htmlFor="categoria-chamado">
             Categoria *
           </label>
@@ -126,7 +160,9 @@ function FormularioChamado({
             onChange={(e) => setCategoria(e.target.value)}
             required
           >
-            <option value="">Selecione uma categoria</option>
+            <option value="">
+              Selecione uma categoria
+            </option>
 
             {categorias.map((item) => (
               <option
@@ -138,6 +174,7 @@ function FormularioChamado({
             ))}
           </select>
 
+          {/* Regiao */}
           <label htmlFor="regiao-chamado">
             Região *
           </label>
@@ -148,7 +185,9 @@ function FormularioChamado({
             onChange={(e) => setRegiao(e.target.value)}
             required
           >
-            <option value="">Selecione uma região</option>
+            <option value="">
+              Selecione uma região
+            </option>
 
             {regioes.map((item) => (
               <option
@@ -160,18 +199,21 @@ function FormularioChamado({
             ))}
           </select>
 
+          {/* Endereco */}
           <label htmlFor="endereco-chamado">
             Endereço *
           </label>
 
           <input
             id="endereco-chamado"
+            type="text"
             value={endereco}
             onChange={(e) => setEndereco(e.target.value)}
             placeholder="Rua, número e referência"
             required
           />
 
+          {/* Descricao */}
           <label htmlFor="descricao-chamado">
             Descrição *
           </label>
@@ -182,9 +224,17 @@ function FormularioChamado({
             onChange={(e) => setDescricao(e.target.value)}
             placeholder="Descreva o problema encontrado"
             rows={5}
+            maxLength={1000}
             required
+            aria-describedby="contador-descricao"
           />
 
+          {/* Contador acessivel */}
+          <p id="contador-descricao">
+            {descricao.length} de 1000 caracteres utilizados.
+          </p>
+
+          {/* Foto opcional */}
           <label htmlFor="foto-chamado">
             URL da foto (opcional)
           </label>
@@ -197,10 +247,12 @@ function FormularioChamado({
             placeholder="https://exemplo.com/foto.jpg"
           />
 
+          {/* Botao de envio */}
           <button
             type="submit"
             className="btn btn-primary"
             disabled={salvando}
+            aria-busy={salvando}
           >
             {salvando ? "Salvando..." : textoBotao}
           </button>

@@ -1,8 +1,11 @@
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+import "./App.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import RotaProtegida from "./components/RotaProtegida";
+import NaoEncontrado from "./pages/NaoEncontrado";
+import AcessoNegado from "./pages/AcessoNegado";
 
 // Paginas principais
 import Home from "./pages/Home";
@@ -33,79 +36,118 @@ function App() {
     <BrowserRouter>
       <Header />
 
-      <Routes>
-        {/* Paginas principais */}
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/cadastro" element={<Cadastro />} />
+    
+<Routes>
+  {/* Paginas principais */}
+  <Route path="/" element={<Home />} />
+  <Route path="/login" element={<Login />} />
+  <Route path="/cadastro" element={<Cadastro />} />
 
-        {/* Consulta publica */}
-        <Route path="/chamados" element={<Chamados />} />
+  {/* Consulta publica */}
+  <Route path="/chamados" element={<Chamados />} />
 
-        <Route
-          path="/chamados/:id"
-          element={<DetalhesChamado />}
-        />
+  <Route
+    path="/chamados/:id"
+    element={<DetalhesChamado />}
+  />
 
-        {/* Area do cidadao */}
-        <Route
-          path="/novo-chamado"
-          element={<NovoChamado />}
-        />
+  {/* Area do cidadao */}
+  <Route
+    path="/novo-chamado"
+    element={
+      <RotaProtegida perfil="CIDADAO">
+        <NovoChamado />
+      </RotaProtegida>
+    }
+  />
 
-        <Route
-          path="/meus-chamados"
-          element={<MeusChamados />}
-        />
+  <Route
+    path="/meus-chamados"
+    element={
+      <RotaProtegida perfil="CIDADAO">
+        <MeusChamados />
+      </RotaProtegida>
+    }
+  />
 
-        <Route
-          path="/editar-chamado/:id"
-          element={<EditarChamado />}
-        />
+  <Route
+    path="/editar-chamado/:id"
+    element={
+      <RotaProtegida perfil="CIDADAO">
+        <EditarChamado />
+      </RotaProtegida>
+    }
+  />
 
-        {/* Area do agente publico */}
-        <Route
-          path="/painel-agente"
-          element={<PainelAgente />}
-        />
+  {/* Area do agente publico */}
+  <Route
+    path="/painel-agente"
+    element={
+      <RotaProtegida perfil="AGENTE">
+        <PainelAgente />
+      </RotaProtegida>
+    }
+  />
 
-        <Route
-          path="/meus-atendimentos"
-          element={<MeusAtendimentos />}
-        />
+  <Route
+    path="/meus-atendimentos"
+    element={
+      <RotaProtegida perfil="AGENTE">
+        <MeusAtendimentos />
+      </RotaProtegida>
+    }
+  />
 
-        <Route
-          path="/resolver-chamado/:id"
-          element={<ResolverChamado />}
-        />
+  <Route
+    path="/resolver-chamado/:id"
+    element={
+      <RotaProtegida perfil="AGENTE">
+        <ResolverChamado />
+      </RotaProtegida>
+    }
+  />
 
-        {/* Area administrativa */}
-        <Route
-          path="/administracao"
-          element={<Administracao />}
-        />
+  {/* Area administrativa */}
+  <Route
+    path="/administracao"
+    element={
+      <RotaProtegida perfil="ADMIN">
+        <Administracao />
+      </RotaProtegida>
+    }
+  />
 
-        <Route
-          path="/admin/categorias"
-          element={<AdminCategorias />}
-        />
+  <Route
+    path="/admin/categorias"
+    element={
+      <RotaProtegida perfil="ADMIN">
+        <AdminCategorias />
+      </RotaProtegida>
+    }
+  />
 
-        <Route
-          path="/admin/regioes"
-          element={<AdminRegioes />}
-        />
+  <Route
+    path="/admin/regioes"
+    element={
+      <RotaProtegida perfil="ADMIN">
+        <AdminRegioes />
+      </RotaProtegida>
+    }
+  />
 
-        {/* Pagina nao encontrada */}
-        <Route
-          path="*"
-          element={
-            <main className="ca-pagina">
-              <h1>Pagina nao encontrada</h1>
-              <p>O endereco informado nao existe.</p>
-            </main>
-          }
-        />
-      </Routes>
+  {/* Acesso negado */}
+  <Route
+    path="/acesso-negado"
+    element={<AcessoNegado />}
+  />
+
+  {/* Pagina nao encontrada */}
+  <Route
+    path="*"
+    element={<NaoEncontrado />}
+  />
+</Routes>
+
 
       <Footer />
     </BrowserRouter>
