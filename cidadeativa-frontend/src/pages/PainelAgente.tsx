@@ -10,6 +10,7 @@ import { obterUsuario } from "../services/usuarioLogado";
 import BotaoAtualizar from "../components/BotaoAtualizar";
 import Carregamento from "../components/Carregamento";
 import MensagemErro from "../components/MensagemErro";
+import ResumoChamados from "../components/ResumoChamados";
 
 import type { ChamadoAgente } from "../types/Agente";
 
@@ -110,6 +111,8 @@ function PainelAgente() {
   return (
     <main className="chamados-container">
       <h1>Painel do agente público</h1>
+      
+    <ResumoChamados chamados={chamados} />
 
       <p>
         Consulte os chamados disponíveis e escolha

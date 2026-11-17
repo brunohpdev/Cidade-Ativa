@@ -234,3 +234,39 @@
   border-radius: 8px;
   color: #991b1b;
 }
+
+/* RESUMO DE CHAMADOS - COMMIT 6 */
+
+.ca-resumo {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  margin: 25px 0;
+}
+
+.ca-resumo-card {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+}
+
+.ca-resumo-card h3 {
+  margin-bottom: 12px;
+  color: #334155;
+  font-size: 16px;
+}
+
+.ca-resumo-card p {
+  margin: 0;
+  color: #087f70;
+  font-size: 32px;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .ca-resumo {
+    grid-template-columns: 1fr;
+  }
+}
