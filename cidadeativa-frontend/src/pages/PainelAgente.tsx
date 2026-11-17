@@ -1,7 +1,14 @@
 
 import { useEffect, useState } from "react";
-import {listarChamados,assumirChamado} from "../services/agenteService";
+
+import {
+  listarChamados,
+  assumirChamado
+} from "../services/agenteService";
+
 import { obterUsuario } from "../services/usuarioLogado";
+import BotaoAtualizar from "../components/BotaoAtualizar";
+
 import type { ChamadoAgente } from "../types/Agente";
 
 function PainelAgente() {
@@ -13,10 +20,13 @@ function PainelAgente() {
 
   const usuario = obterUsuario();
 
-  // Buscar chamados na API
+  // Buscar chamados atualizados da API
   async function carregarChamados() {
+    setCarregando(true);
+
     try {
       const dados = await listarChamados();
+
       setChamados(dados);
       setErro("");
     } catch {
@@ -26,11 +36,12 @@ function PainelAgente() {
     }
   }
 
+  // Buscar chamados ao abrir a pagina
   useEffect(() => {
     carregarChamados();
   }, []);
 
-  // Mostrar somente chamados abertos e sem agente
+  // Mostrar apenas chamados abertos e sem agente
   const chamadosDisponiveis = chamados.filter(
     (chamado) =>
       chamado.stChamado === "ABERTO" &&
@@ -44,7 +55,11 @@ function PainelAgente() {
       return;
     }
 
-    if (!window.confirm("Deseja assumir este chamado?")) {
+    const confirmou = window.confirm(
+      "Deseja assumir este chamado?"
+    );
+
+    if (!confirmou) {
       return;
     }
 
@@ -57,7 +72,7 @@ function PainelAgente() {
 
       setSucesso("Chamado assumido com sucesso!");
 
-      // Atualizar a lista depois de assumir
+      // Atualizar a lista apos assumir
       await carregarChamados();
     } catch {
       setErro(
@@ -69,22 +84,25 @@ function PainelAgente() {
     }
   }
 
-  // Restringir a tela aos agentes
+  // Restringir a pagina aos agentes
   if (!usuario || usuario.tpUsuario !== "AGENTE") {
     return (
       <main className="chamados-container">
         <h1>Acesso restrito</h1>
-        <p>Somente agentes públicos podem acessar esta página.</p>
+
+        <p>
+          Somente agentes públicos podem acessar esta página.
+        </p>
       </main>
     );
   }
 
-  if (carregando) {
-    return (
-      <main className="chamados-container">
-        <p>Carregando chamados...</p>
-      </main>
-    );
+  if (carregando && chamados.length === 0) {
+  return (
+    <main className="chamados-container">
+      <p>Carregando chamados...</p>
+    </main>
+     );
   }
 
   return (
@@ -95,6 +113,12 @@ function PainelAgente() {
         Consulte os chamados disponíveis e escolha
         quais deseja atender.
       </p>
+
+      {/* Botao do commit 3 */}
+      <BotaoAtualizar
+        atualizar={carregarChamados}
+        carregando={carregando}
+      />
 
       {erro && (
         <p className="erro" role="alert">
@@ -111,12 +135,14 @@ function PainelAgente() {
       <h2>Chamados disponíveis</h2>
 
       <p>
-        Total de chamados disponíveis: {chamadosDisponiveis.length}
+        Total de chamados disponíveis:{" "}
+        {chamadosDisponiveis.length}
       </p>
 
       {chamadosDisponiveis.length === 0 ? (
         <div className="lista-vazia">
           <h3>Nenhum chamado disponível</h3>
+
           <p>
             Não existem chamados abertos aguardando
             atendimento no momento.
@@ -133,7 +159,9 @@ function PainelAgente() {
                 {chamado.nrProtocolo}
               </span>
 
-              <h3>Chamado #{chamado.cdChamado}</h3>
+              <h3>
+                Chamado #{chamado.cdChamado}
+              </h3>
 
               <p className="chamado-descricao">
                 {chamado.dsDescricao}
