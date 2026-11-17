@@ -270,3 +270,120 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* =====================================
+   CIDADEATIVA - RESPONSIVIDADE
+   COMMIT 7
+===================================== */
+
+/* Tablets e celulares */
+@media (max-width: 768px) {
+
+  /* Menu de navegacao */
+  .ca-header-conteudo {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .ca-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  /* Paginas principais */
+  .ca-pagina,
+  .chamados-container {
+    width: 100%;
+    padding: 20px 15px;
+  }
+
+  /* Resumo dos chamados */
+  .ca-resumo {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  /* Cards */
+  .ca-painel-grid,
+  .chamados-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .ca-painel-card,
+  .chamado-card {
+    width: 100%;
+  }
+
+  /* Formularios */
+  .ca-formulario,
+  .formulario-chamado,
+  .auth-card {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* Campos */
+  input,
+  select,
+  textarea {
+    max-width: 100%;
+  }
+
+  /* Botoes */
+  .ca-acoes {
+    flex-wrap: wrap;
+  }
+}
+
+/* Celulares pequenos */
+@media (max-width: 480px) {
+
+  .ca-header-conteudo {
+    padding: 15px;
+  }
+
+  .ca-logo {
+    font-size: 21px;
+  }
+
+  .ca-nav {
+    gap: 10px;
+  }
+
+  .ca-nav a {
+    font-size: 14px;
+  }
+
+  .ca-pagina h1,
+  .chamados-container h1 {
+    font-size: 26px;
+  }
+
+  .ca-painel-card,
+  .chamado-card {
+    padding: 16px;
+  }
+
+  .ca-resumo-card {
+    padding: 18px;
+  }
+
+  .ca-resumo-card p {
+    font-size: 28px;
+  }
+
+  .auth-container {
+    padding: 20px 12px;
+  }
+
+  .auth-card {
+    padding: 20px;
+  }
+
+  .formulario-chamado {
+    padding: 16px;
+  }
+}
