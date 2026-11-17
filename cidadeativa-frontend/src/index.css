@@ -217,3 +217,20 @@
   display: inline-block;
   margin-top: 15px;
 }
+
+/* Componentes de carregamento e erro */
+
+.ca-carregamento {
+  padding: 25px;
+  text-align: center;
+  color: #475569;
+}
+
+.ca-mensagem-erro {
+  padding: 15px;
+  margin: 15px 0;
+  background-color: #fef2f2;
+  border: 1px solid #fca5a5;
+  border-radius: 8px;
+  color: #991b1b;
+}

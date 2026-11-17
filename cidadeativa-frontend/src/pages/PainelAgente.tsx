@@ -8,6 +8,8 @@ import {
 
 import { obterUsuario } from "../services/usuarioLogado";
 import BotaoAtualizar from "../components/BotaoAtualizar";
+import Carregamento from "../components/Carregamento";
+import MensagemErro from "../components/MensagemErro";
 
 import type { ChamadoAgente } from "../types/Agente";
 
@@ -97,12 +99,12 @@ function PainelAgente() {
     );
   }
 
-  if (carregando && chamados.length === 0) {
+  if (carregando && chamados.length === 0 && !erro) {
   return (
     <main className="chamados-container">
-      <p>Carregando chamados...</p>
+      <Carregamento mensagem="Buscando chamados..." />
     </main>
-     );
+    );
   }
 
   return (
@@ -120,11 +122,7 @@ function PainelAgente() {
         carregando={carregando}
       />
 
-      {erro && (
-        <p className="erro" role="alert">
-          {erro}
-        </p>
-      )}
+      {erro && <MensagemErro mensagem={erro} />}
 
       {sucesso && (
         <p className="mensagem-sucesso" role="status">
