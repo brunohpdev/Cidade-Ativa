@@ -387,3 +387,55 @@
     padding: 16px;
   }
 }
+
+/* =====================================
+   CIDADEATIVA - ACESSIBILIDADE
+   COMMIT 8
+===================================== */
+
+/* Destacar o elemento selecionado pelo teclado */
+:focus-visible {
+  outline: 3px solid #087f70;
+  outline-offset: 3px;
+}
+
+/* Facilitar leitura e interacao */
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+/* Melhorar elementos desabilitados */
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Melhorar a leitura dos campos */
+label {
+  font-weight: 600;
+}
+
+/* Links acessiveis */
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid #087f70;
+  outline-offset: 4px;
+}
+
+/* Mensagens de erro */
+[role="alert"] {
+  margin-top: 10px;
+}
+
+/* Reduzir animacoes para quem prefere */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -54,7 +54,7 @@ function FormularioChamado({
   const [salvando, setSalvando] = useState(false);
   const [erro, setErro] = useState("");
 
-  // Carregar categorias e regioes
+  // Carregar categorias e regioes da API
   useEffect(() => {
     let ativo = true;
 
@@ -87,24 +87,24 @@ function FormularioChamado({
     };
   }, []);
 
-  // Enviar formulario
+  // Validar e enviar formulario
   async function enviar(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setErro("");
 
-    // Verificar categoria e regiao
+    // Validar categoria e regiao
     if (!categoria || !regiao) {
       setErro("Selecione uma categoria e uma região.");
       return;
     }
 
-    // Verificar endereco
+    // Validar endereco
     if (!campoObrigatorio(endereco)) {
       setErro("Informe o endereço da ocorrência.");
       return;
     }
 
-    // Verificar descricao
+    // Validar descricao
     if (!validarDescricao(descricao)) {
       setErro(
         "A descrição é obrigatória e deve ter até 1000 caracteres."
@@ -138,6 +138,7 @@ function FormularioChamado({
         Os campos com * são obrigatórios.
       </p>
 
+      {/* Mensagem de erro acessivel */}
       {erro && (
         <p className="erro" role="alert">
           {erro}
@@ -145,9 +146,10 @@ function FormularioChamado({
       )}
 
       {carregando ? (
-        <p>Carregando opções...</p>
+        <p role="status">Carregando opções...</p>
       ) : (
         <>
+          {/* Categoria */}
           <label htmlFor="categoria-chamado">
             Categoria *
           </label>
@@ -172,6 +174,7 @@ function FormularioChamado({
             ))}
           </select>
 
+          {/* Regiao */}
           <label htmlFor="regiao-chamado">
             Região *
           </label>
@@ -196,18 +199,21 @@ function FormularioChamado({
             ))}
           </select>
 
+          {/* Endereco */}
           <label htmlFor="endereco-chamado">
             Endereço *
           </label>
 
           <input
             id="endereco-chamado"
+            type="text"
             value={endereco}
             onChange={(e) => setEndereco(e.target.value)}
             placeholder="Rua, número e referência"
             required
           />
 
+          {/* Descricao */}
           <label htmlFor="descricao-chamado">
             Descrição *
           </label>
@@ -220,12 +226,15 @@ function FormularioChamado({
             rows={5}
             maxLength={1000}
             required
+            aria-describedby="contador-descricao"
           />
 
-          <p>
-            {descricao.length}/1000 caracteres
+          {/* Contador acessivel */}
+          <p id="contador-descricao">
+            {descricao.length} de 1000 caracteres utilizados.
           </p>
 
+          {/* Foto opcional */}
           <label htmlFor="foto-chamado">
             URL da foto (opcional)
           </label>
@@ -238,10 +247,12 @@ function FormularioChamado({
             placeholder="https://exemplo.com/foto.jpg"
           />
 
+          {/* Botao de envio */}
           <button
             type="submit"
             className="btn btn-primary"
             disabled={salvando}
+            aria-busy={salvando}
           >
             {salvando ? "Salvando..." : textoBotao}
           </button>

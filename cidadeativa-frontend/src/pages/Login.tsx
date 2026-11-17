@@ -17,19 +17,16 @@ function Login() {
     e.preventDefault();
     setErro("");
 
-    // Validar e-mail
     if (!validarEmail(email)) {
       setErro("Digite um e-mail válido.");
       return;
     }
 
-    // Validar senha
     if (!campoObrigatorio(senha)) {
       setErro("Preencha a senha.");
       return;
     }
 
-    // Iniciar carregamento apenas apos validar
     setCarregando(true);
 
     try {
@@ -41,13 +38,11 @@ function Login() {
         }),
       });
 
-      // Salvar usuario logado
       sessionStorage.setItem(
         "usuario",
         JSON.stringify(usuario)
       );
 
-      // Direcionar conforme o perfil
       if (usuario.tpUsuario === "AGENTE") {
         navigate("/painel-agente");
       } else if (usuario.tpUsuario === "ADMIN") {
@@ -55,7 +50,6 @@ function Login() {
       } else {
         navigate("/meus-chamados");
       }
-
     } catch {
       setErro("Não foi possível entrar. Confira seus dados.");
     } finally {
@@ -73,6 +67,7 @@ function Login() {
         </p>
 
         <label htmlFor="email">E-mail</label>
+
         <input
           id="email"
           type="email"
@@ -81,9 +76,15 @@ function Login() {
           onChange={(e) => setEmail(e.target.value)}
           required
           autoComplete="email"
+          aria-describedby="ajuda-email"
         />
 
+        <small id="ajuda-email">
+          Digite o e-mail utilizado no cadastro.
+        </small>
+
         <label htmlFor="senha">Senha</label>
+
         <input
           id="senha"
           type="password"
