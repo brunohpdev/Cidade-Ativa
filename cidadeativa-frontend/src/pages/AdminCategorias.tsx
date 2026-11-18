@@ -113,8 +113,8 @@ function AdminCategorias() {
   }
 
   return (
-    <main className="chamados-container">
-      <h1>Gerenciar categorias</h1>
+  <main className="chamados-container ca-editor-page">
+    <h1>Gerenciar categorias</h1>
 
       <p>Cadastre, consulte, altere e exclua categorias.</p>
 
