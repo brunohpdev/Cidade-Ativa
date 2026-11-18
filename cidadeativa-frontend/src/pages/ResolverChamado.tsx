@@ -107,63 +107,108 @@ function ResolverChamado() {
     }
   }
 
-  return (
-    <main className="chamados-container">
+ 
+return (
+  <main className="chamados-container ca-editor-page">
+    <header className="ca-resolver-header">
       <h1>Resolver chamado</h1>
-
       <p>
-        <strong>Protocolo:</strong>{" "}
-        {chamado.nrProtocolo}
+        Registre as informações do atendimento realizado
+        para concluir esta ocorrência.
+      </p>
+    </header>
+
+    <section className="ca-resolver-card">
+      <h2>Informações da ocorrência</h2>
+
+      <div className="ca-resolver-infos">
+        <div className="ca-resolver-info">
+          <span>Protocolo</span>
+          <strong>{chamado.nrProtocolo}</strong>
+        </div>
+
+        <div className="ca-resolver-info">
+          <span>Status</span>
+          <strong>Em andamento</strong>
+        </div>
+
+        <div className="ca-resolver-info ca-resolver-info-full">
+          <span>Descrição do problema</span>
+          <p>{chamado.dsDescricao}</p>
+        </div>
+
+        <div className="ca-resolver-info ca-resolver-info-full">
+          <span>Endereço</span>
+          <p>{chamado.dsEndereco}</p>
+        </div>
+      </div>
+    </section>
+
+    <section className="ca-resolver-card">
+      <h2>Registrar resolução</h2>
+      <p>
+        Descreva como o problema foi resolvido.
+        A foto de comprovação é opcional.
       </p>
 
-      <p>
-        <strong>Descrição:</strong>{" "}
-        {chamado.dsDescricao}
-      </p>
+      <form onSubmit={salvar} className="ca-resolver-form">
+        <div className="ca-resolver-campo">
+          <label htmlFor="descricao-resolucao">
+            Descrição da resolução *
+          </label>
 
-      <p>
-        <strong>Endereço:</strong>{" "}
-        {chamado.dsEndereco}
-      </p>
+          <textarea
+            id="descricao-resolucao"
+            value={descricao}
+            onChange={(e) => setDescricao(e.target.value)}
+            rows={5}
+            maxLength={1000}
+            required
+            placeholder="Descreva o serviço realizado pela equipe"
+          />
+        </div>
 
-      <form onSubmit={salvar} className="ca-formulario">
-        <label htmlFor="descricao-resolucao">
-          Descrição da resolução *
-        </label>
+        <div className="ca-resolver-campo">
+          <label htmlFor="foto-resolucao">
+            URL da foto (opcional)
+          </label>
 
-        <textarea
-          id="descricao-resolucao"
-          value={descricao}
-          onChange={(e) => setDescricao(e.target.value)}
-          rows={5}
-          required
-          placeholder="Descreva como o chamado foi resolvido"
-        />
+          <input
+            id="foto-resolucao"
+            type="url"
+            value={foto}
+            onChange={(e) => setFoto(e.target.value)}
+            placeholder="https://exemplo.com/foto.jpg"
+          />
+        </div>
 
-        <label htmlFor="foto-resolucao">
-          URL da foto (opcional)
-        </label>
+        {erro && (
+          <p className="ca-resolver-erro" role="alert">
+            {erro}
+          </p>
+        )}
 
-        <input
-          id="foto-resolucao"
-          type="url"
-          value={foto}
-          onChange={(e) => setFoto(e.target.value)}
-          placeholder="https://exemplo.com/foto.jpg"
-        />
+        <div className="ca-resolver-acoes">
+          <button
+            className="btn btn-primary"
+            type="submit"
+            disabled={salvando}
+          >
+            {salvando ? "Salvando..." : "Concluir atendimento"}
+          </button>
 
-        {erro && <p className="erro">{erro}</p>}
-
-        <button
-          className="btn btn-primary"
-          type="submit"
-          disabled={salvando}
-        >
-          {salvando ? "Salvando..." : "Concluir atendimento"}
-        </button>
+          <Link
+            to="/meus-atendimentos"
+            className="btn ca-resolver-voltar"
+          >
+            Voltar
+          </Link>
+        </div>
       </form>
-    </main>
-  );
+    </section>
+  </main>
+);
+
 }
 
 export default ResolverChamado;
