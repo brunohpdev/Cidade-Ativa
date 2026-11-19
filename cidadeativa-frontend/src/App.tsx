@@ -1,4 +1,5 @@
 
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Header from "./components/Header";
@@ -11,6 +12,11 @@ import AcessoNegado from "./pages/AcessoNegado";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Cadastro from "./pages/Cadastro";
+import Sobre from "./pages/Sobre";
+import Integrantes from "./pages/Integrantes";
+import FAQ from "./pages/Faq";
+import Contato from "./pages/Contato";
+
 
 // Paginas publicas
 import Chamados from "./pages/Chamados";
@@ -42,6 +48,11 @@ function App() {
   <Route path="/" element={<Home />} />
   <Route path="/login" element={<Login />} />
   <Route path="/cadastro" element={<Cadastro />} />
+  <Route path="/sobre" element={<Sobre />} />
+  <Route path="/integrantes" element={<Integrantes />} />
+  <Route path="/faq" element={<FAQ />} />
+  <Route path="/contato" element={<Contato />} />
+
 
   {/* Consulta publica */}
   <Route path="/chamados" element={<Chamados />} />

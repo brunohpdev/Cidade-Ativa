@@ -33,6 +33,25 @@ function Header() {
             Chamados
           </NavLink>
 
+          
+          <NavLink to="/sobre">
+            Sobre
+          </NavLink>
+
+          <NavLink to="/integrantes">
+            Integrantes
+          </NavLink>
+
+          <NavLink to="/faq">
+            FAQ
+          </NavLink>
+
+          <NavLink to="/contato">
+            Contato
+          </NavLink>
+
+
+
           {/* Links do cidadao */}
           {usuario?.tpUsuario === "CIDADAO" && (
             <>

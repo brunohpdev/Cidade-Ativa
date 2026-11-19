@@ -97,91 +97,142 @@ function AdminCategorias() {
       await carregar();
       setSucesso("Categoria excluída com sucesso.");
     } catch {
-      setErro(
-        "Não foi possível excluir. A categoria pode estar em uso."
-      );
+      setErro("Não foi possível excluir. A categoria pode estar em uso.");
     }
   }
 
   if (!usuario || usuario.tpUsuario !== "ADMIN") {
     return (
-      <main className="chamados-container">
-        <h1>Acesso restrito</h1>
-        <p>Somente administradores podem acessar esta página.</p>
+      <main className="mx-auto max-w-5xl px-6 py-12">
+        <h1 className="mb-4 text-3xl font-bold text-slate-900">
+          Acesso restrito
+        </h1>
+        <p className="text-slate-600">
+          Somente administradores podem acessar esta página.
+        </p>
       </main>
     );
   }
 
+  const campoClasse =
+    "w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none focus:border-teal-700 focus:ring-2 focus:ring-teal-100";
+
+  const botaoPrincipal =
+    "rounded-lg bg-teal-700 px-5 py-3 font-semibold text-white transition hover:bg-teal-800";
+
+  const botaoSecundario =
+    "rounded-lg border border-slate-300 bg-white px-5 py-3 font-semibold text-slate-700 transition hover:bg-slate-100";
+
   return (
-  <main className="chamados-container ca-editor-page">
-    <h1>Gerenciar categorias</h1>
+    <main className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:py-14">
+      <h1 className="mb-3 text-3xl font-bold text-slate-900 md:text-4xl">
+        Gerenciar categorias
+      </h1>
 
-      <p>Cadastre, consulte, altere e exclua categorias.</p>
+      <p className="mb-8 text-slate-600">
+        Cadastre, consulte, altere e exclua categorias.
+      </p>
 
-      <form onSubmit={salvar} className="ca-formulario">
-        <h2>
+      <form
+        onSubmit={salvar}
+        className="mb-10 flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-8"
+      >
+        <h2 className="mb-2 text-2xl font-bold text-slate-900">
           {id === null ? "Nova categoria" : "Editar categoria"}
         </h2>
 
-        <label htmlFor="nome-categoria">Nome</label>
+        <label
+          htmlFor="nome-categoria"
+          className="font-semibold text-slate-700"
+        >
+          Nome
+        </label>
 
         <input
           id="nome-categoria"
           type="text"
+          className={campoClasse}
           value={nome}
           onChange={(e) => setNome(e.target.value)}
           required
         />
 
-        <label htmlFor="descricao-categoria">
+        <label
+          htmlFor="descricao-categoria"
+          className="font-semibold text-slate-700"
+        >
           Descrição
         </label>
 
         <textarea
           id="descricao-categoria"
+          className={campoClasse}
           value={descricao}
           onChange={(e) => setDescricao(e.target.value)}
           rows={3}
         />
 
-        <div className="ca-acoes">
-          <button type="submit" className="btn btn-primary">
+        <div className="mt-3 flex flex-wrap gap-3">
+          <button type="submit" className={botaoPrincipal}>
             Salvar
           </button>
 
-          <button type="button" onClick={limpar}>
+          <button
+            type="button"
+            onClick={limpar}
+            className={botaoSecundario}
+          >
             Limpar
           </button>
         </div>
       </form>
 
-      {erro && <p className="erro">{erro}</p>}
+      {erro && (
+        <p
+          role="alert"
+          className="mb-5 rounded-lg border border-red-200 bg-red-50 p-4 text-red-700"
+        >
+          {erro}
+        </p>
+      )}
 
       {sucesso && (
-        <p className="mensagem-sucesso">{sucesso}</p>
+        <p
+          role="status"
+          className="mb-5 rounded-lg border border-green-200 bg-green-50 p-4 text-green-700"
+        >
+          {sucesso}
+        </p>
       )}
 
-      <h2>Categorias cadastradas</h2>
+      <h2 className="mb-6 text-2xl font-bold text-slate-900">
+        Categorias cadastradas
+      </h2>
 
       {categorias.length === 0 && (
-        <p>Nenhuma categoria cadastrada.</p>
+        <p className="mb-5 text-slate-600">
+          Nenhuma categoria cadastrada.
+        </p>
       )}
 
-      <div className="chamados-grid">
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
         {categorias.map((categoria) => (
           <article
-            className="chamado-card"
             key={categoria.cdCategoria}
+            className="flex min-w-0 flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
           >
-            <h3>{categoria.nmCategoria}</h3>
+            <h3 className="mb-3 text-xl font-bold text-teal-700">
+              {categoria.nmCategoria}
+            </h3>
 
-            <p>
+            <p className="mb-6 flex-1 text-slate-600">
               {categoria.dsCategoria || "Sem descrição"}
             </p>
 
-            <div className="ca-acoes">
+            <div className="flex flex-wrap gap-3">
               <button
                 type="button"
+                className={botaoPrincipal}
                 onClick={() => editar(categoria)}
               >
                 Editar
@@ -189,6 +240,7 @@ function AdminCategorias() {
 
               <button
                 type="button"
+                className={botaoSecundario}
                 onClick={() => excluir(categoria.cdCategoria)}
               >
                 Excluir
