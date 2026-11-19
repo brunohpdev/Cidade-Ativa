@@ -266,15 +266,7 @@ A aplicação possui três perfis de acesso:
 - **AGENTE:** atendimento e resolução de chamados.
 - **ADMIN:** gerenciamento dos cadastros administrativos.
 
-Os dados da sessão são armazenados no `sessionStorage`, e a navegação é apresentada conforme o perfil do usuário.
-
 A proteção de rotas no frontend organiza o acesso às páginas, mas as operações também precisam ser autorizadas pelo backend.
-
-### Inteligência artificial
-
-O CidadeAtiva também contempla uma solução de inteligência artificial desenvolvida em Python para classificação de riscos urbanos e identificação de regiões críticas.
-
-Esse módulo é desenvolvido separadamente e não possui integração direta com o frontend React.
 
 **API publicada:**  
 https://cidadeativa-gs.onrender.com
