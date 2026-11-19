@@ -1,197 +1,301 @@
 # CidadeAtiva — Front-end
 
-**Global Solution 2026/2 — CitizenTech | FIAP**
-
+**Global Solution 2026/2 — CitizenTech | FIAP**  
 **Equipe:** DevForce  
-**Turma:** 1TDSPY
+**Turma:** 1TDSPY  
+**Curso:** Análise e Desenvolvimento de Sistemas
 
 ## 1. Sobre o projeto
 
-O **CidadeAtiva** é uma plataforma web desenvolvida para facilitar a comunicação entre cidadãos e agentes públicos na identificação, no registro e no acompanhamento de problemas de infraestrutura urbana.
+O **CidadeAtiva** é uma plataforma web voltada ao registro e ao acompanhamento de problemas de infraestrutura urbana. Cidadãos podem comunicar ocorrências, como buracos, problemas de iluminação pública, lixo acumulado, calçadas danificadas, enchentes, falhas de sinalização e árvores caídas. Agentes públicos podem assumir chamados disponíveis e registrar a conclusão do atendimento.
 
-A solução permite que cidadãos registrem ocorrências relacionadas a buracos, iluminação pública, lixo acumulado, calçadas danificadas, enchentes, sinalização e árvores caídas. Os agentes públicos podem assumir os chamados e registrar a resolução dos problemas.
-
-O projeto busca incentivar a participação cidadã e contribuir para cidades mais organizadas, acessíveis e sustentáveis, estando relacionado ao **Objetivo de Desenvolvimento Sustentável 11 (ODS 11) — Cidades e Comunidades Sustentáveis**.
+A proposta está relacionada ao **ODS 11 — Cidades e Comunidades Sustentáveis**, por incentivar a participação cidadã e a melhoria dos espaços urbanos.
 
 ## 2. Objetivo
 
-Desenvolver uma Single Page Application (SPA) responsiva, utilizando React e TypeScript, integrada a uma API REST Java para consultar, cadastrar e atualizar informações reais sobre ocorrências urbanas.
+Desenvolver uma **Single Page Application (SPA)** responsiva em React e TypeScript, integrada a uma API REST em Java, com páginas e ações específicas para visitantes, cidadãos, agentes públicos e administradores.
 
-A aplicação oferece interfaces específicas para cidadãos, agentes públicos e administradores, permitindo o gerenciamento das solicitações conforme o perfil de acesso.
-
-## 3. Funcionalidades
+## 3. Funcionalidades implementadas
 
 ### Área pública
-- Página inicial com apresentação da solução.
-- Consulta de ocorrências urbanas.
+
+- Página inicial, Sobre, Integrantes, FAQ e Contato.
+- Consulta da lista de chamados e detalhes de cada ocorrência.
+- Filtros por categoria, região, status e protocolo na listagem pública.
 - Cadastro e login de usuários.
-- Página Sobre o projeto.
-- Página Integrantes.
-- Página de perguntas frequentes (FAQ).
-- Página de Contato.
+- Página de acesso negado e tratamento de rotas inexistentes.
+- Formulário de contato que abre o aplicativo de e-mail do visitante para confirmar o envio da mensagem.
 
 ### Cidadão
-- Cadastro e autenticação.
-- Registro de ocorrências com categoria, região, endereço e descrição.
-- Inclusão opcional de fotografia.
-- Consulta dos próprios chamados.
-- Acompanhamento do status das solicitações.
-- Edição de chamados enquanto estiverem abertos.
+
+- Abertura de chamado com categoria, região, endereço e descrição.
+- Campo opcional de URL da fotografia da ocorrência.
+- Consulta e acompanhamento dos próprios chamados.
+- Edição de chamados enquanto estiverem abertos, conforme as regras do backend.
 
 ### Agente público
-- Acesso ao painel do agente.
-- Visualização de chamados disponíveis.
-- Possibilidade de assumir ocorrências abertas.
+
+- Painel para consultar chamados disponíveis.
+- Possibilidade de assumir chamados abertos.
 - Consulta dos atendimentos sob sua responsabilidade.
-- Registro da resolução com descrição obrigatória e fotografia opcional.
+- Registro da resolução com descrição obrigatória e URL de fotografia opcional.
 
 ### Administrador
+
 - Acesso à área administrativa.
-- Gerenciamento dos cadastros disponibilizados pelo sistema.
+- Listagem, cadastro, edição e exclusão de categorias.
+- Listagem, cadastro, edição e exclusão de regiões.
 
 ### Status dos chamados
-- **ABERTO:** ocorrência registrada, aguardando atendimento.
-- **EM_ANDAMENTO:** ocorrência assumida por um agente público.
-- **RESOLVIDO:** atendimento concluído pelo agente responsável.
+
+| Status | Significado |
+|---|---|
+| ABERTO | Ocorrência registrada e aguardando atendimento |
+| EM_ANDAMENTO | Chamado assumido por um agente público |
+| RESOLVIDO | Atendimento concluído pelo agente responsável |
 
 ## 4. Tecnologias utilizadas
 
 | Tecnologia | Utilização |
 |---|---|
-| React | Desenvolvimento da interface e componentes |
+| React | Componentes e interface web |
 | TypeScript | Tipagem e organização do código |
-| Vite | Ambiente de desenvolvimento e build |
-| React Router DOM | Navegação e gerenciamento das rotas |
-| CSS3 | Estilização e responsividade |
-| Fetch API | Comunicação HTTP com o backend |
-| Git e GitHub | Versionamento e hospedagem do código |
-| Vercel | Publicação do frontend |
-| Java REST API | Backend responsável pelos dados e regras de negócio |
-| Oracle Database | Persistência dos dados no backend |
+| Vite | Servidor de desenvolvimento e build |
+| React Router DOM | Rotas públicas e protegidas |
+| CSS e Tailwind CSS | Estilização e responsividade |
+| Lucide React | Ícones da interface |
+| Fetch API | Comunicação com a API Java |
+| Vitest | Testes automatizados |
+| Oxlint | Análise estática do código |
+| Git e GitHub | Versionamento |
+| Vercel | Hospedagem do frontend |
+| Java, Spring Boot e JDBC | Desenvolvimento do backend |
+| Oracle Database | Persistência dos dados |
 | Render | Hospedagem da API Java |
-
 
 ## 5. Estrutura do projeto
 
-A aplicação está organizada em diretórios específicos para páginas, componentes, serviços e tipos.
+O frontend está organizado em diretórios específicos para componentes, páginas, serviços, tipos e funções auxiliares.
 
 ```text
 Cidade-Ativa/
-├── cidadeativa-frontend/
-│   ├── public/
-│   │   └── img/
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── services/
-│   │   ├── types/
-│   │   ├── App.tsx
-│   │   └── index.css
-│   ├── package.json
-│   ├── package-lock.json
-│   ├── vite.config.ts
-│   ├── vercel.json
-│   └── README.md
-└── .gitignore
+├── .gitignore
+├── README.md
+└── cidadeativa-frontend/
+    ├── .gitignore
+    ├── .oxlintrc.json
+    ├── index.html
+    ├── public/
+    │   └── img/
+    │       ├── Bruno.png
+    │       ├── Murilo.png
+    │       ├── Nicolas.png
+    │       └── Rodrigo.png
+    ├── src/
+    │   ├── components/
+    │   │   ├── BotaoAtualizar.tsx
+    │   │   ├── Carregamento.tsx
+    │   │   ├── Footer.tsx
+    │   │   ├── FormularioChamado.tsx
+    │   │   ├── Header.tsx
+    │   │   ├── MensagemErro.tsx
+    │   │   ├── ResumoChamados.tsx
+    │   │   └── RotaProtegida.tsx
+    │   ├── pages/
+    │   ├── services/
+    │   │   ├── agenteService.ts
+    │   │   ├── api.ts
+    │   │   ├── sessao.ts
+    │   │   └── usuarioLogado.ts
+    │   ├── types/
+    │   ├── utils/
+    │   │   ├── validacoes.ts
+    │   │   └── validacoes.test.ts
+    │   ├── App.tsx
+    │   ├── App.css
+    │   ├── index.css
+    │   └── main.tsx
+    ├── package.json
+    ├── package-lock.json
+    ├── vite.config.ts
+    ├── vercel.json
+    └── tsconfig.json
 ```
 
-**Diretórios principais:**
+### Organização dos diretórios
 
-- `components/`: componentes reutilizáveis, como o cabeçalho.
-- `pages/`: páginas da aplicação, incluindo login, cadastro, chamados, painéis e páginas institucionais.
-- `services/`: funções responsáveis pela comunicação com a API e gerenciamento de dados de autenticação.
-- `types/`: definições de tipos TypeScript.
-- `public/`: arquivos estáticos e fotografias dos integrantes.
-- `App.tsx`: configuração das rotas.
-- `index.css`: estilos e regras de responsividade.
+- `components/`: componentes reutilizáveis, incluindo cabeçalho, rodapé, formulários e proteção de rotas.
+- `pages/`: páginas públicas, institucionais e áreas específicas de cada perfil.
+- `services/`: comunicação com a API, gerenciamento da sessão e operações dos agentes.
+- `types/`: interfaces e definições TypeScript.
+- `utils/`: funções de validação e testes automatizados.
+- `public/img/`: fotografias dos integrantes.
+- `App.tsx`: definição das rotas da aplicação.
+- `main.tsx`: inicialização do React.
+- `App.css` e `index.css`: estilização e responsividade.
 
-## 6. Execução local
+## 6. Como executar localmente
 
 ### Pré-requisitos
 
 - Node.js e npm instalados.
 - Git instalado.
-- Editor de código, como Visual Studio Code.
 - Conexão com a internet para acessar a API remota.
 
-### Clonar o repositório
+### 6.1. Clonar o repositório
 
 ```bash
-git clone LINK_DO_REPOSITORIO
+git clone https://github.com/brunohpdev/Cidade-Ativa.git
 cd Cidade-Ativa/cidadeativa-frontend
 ```
 
-### Instalar as dependências
+### 6.2. Instalar as dependências
 
 ```bash
 npm install
 ```
 
-### Configurar o ambiente
+### 6.3. Configurar a API
 
-Configure a URL da API Java conforme a variável de ambiente utilizada pelos serviços do frontend.
+O frontend utiliza a variável de ambiente `VITE_API_URL` para definir o endereço da API Java.
 
-A URL pública do backend é:
+O arquivo `src/services/api.ts` já contém o endereço público do backend como padrão:
 
 ```text
 https://cidadeativa-gs.onrender.com
 ```
 
-Os arquivos `.env` utilizados para configurações locais não devem ser enviados ao GitHub quando contiverem dados sensíveis.
+Por isso, não é obrigatório criar um arquivo `.env` para utilizar a API publicada.
 
-### Iniciar o projeto
+Caso seja necessário configurar outro endereço, crie um arquivo `.env` na pasta `cidadeativa-frontend`:
+
+```env
+VITE_API_URL=http://localhost:8080
+```
+
+Reinicie o servidor do Vite após modificar a variável.
+
+Não armazene senhas ou informações confidenciais em variáveis `VITE_`, pois seus valores podem ficar disponíveis no navegador.
+
+### 6.4. Iniciar o projeto
 
 ```bash
 npm run dev
 ```
 
-A aplicação será disponibilizada no endereço indicado pelo Vite, normalmente:
+O Vite disponibilizará um endereço local, normalmente:
 
 ```text
-http://localhost:5173
+http://localhost:5173/
 ```
 
-### Gerar a versão de produção
+No Windows PowerShell, caso a execução do `npm.ps1` esteja bloqueada, utilize:
+
+```bash
+npm.cmd run dev
+```
+
+### 6.5. Gerar a versão de produção
 
 ```bash
 npm run build
 ```
 
-O comando executa a verificação TypeScript e gera os arquivos de produção na pasta `dist`.
+O comando verifica o TypeScript e gera os arquivos de produção na pasta `dist`.
 
-## 7. Integração com a API Java
+### 6.6. Executar os testes
 
-O frontend consome a API REST desenvolvida na disciplina de **Domain Driven Design Using Java**, utilizando a Fetch API.
+```bash
+npm run lint
+npx vitest run
+```
 
-A integração permite trabalhar com dados reais, sem depender de dados simulados para as funcionalidades principais.
+O projeto utiliza Oxlint para análise estática e Vitest para testes de funções de validação.
 
-Entre as operações realizadas estão:
+Os testes contemplam situações como campos obrigatórios, formatos de e-mail e limites de caracteres.
 
-- Consulta de chamados por meio de requisições GET.
-- Cadastro de ocorrências por meio de requisições POST.
-- Atualização de informações e status dos chamados.
-- Consulta de categorias e regiões.
-- Autenticação de usuários.
-- Registro da resolução dos atendimentos.
+## 7. Rotas da aplicação
 
-O backend utiliza Java e Oracle Database e está publicado no Render.
+| Rota | Acesso | Finalidade |
+|---|---|---|
+| `/` | Público | Página inicial |
+| `/sobre` | Público | Apresentação do projeto |
+| `/integrantes` | Público | Informações da equipe |
+| `/faq` | Público | Perguntas frequentes |
+| `/contato` | Público | Página de contato |
+| `/login` | Público | Autenticação |
+| `/cadastro` | Público | Cadastro de usuário |
+| `/chamados` | Público | Listagem dos chamados |
+| `/chamados/:id` | Público | Detalhes de um chamado |
+| `/novo-chamado` | Cidadão | Abertura de chamado |
+| `/meus-chamados` | Cidadão | Consulta dos próprios chamados |
+| `/editar-chamado/:id` | Cidadão | Edição de chamado |
+| `/painel-agente` | Agente | Painel de atendimento |
+| `/meus-atendimentos` | Agente | Chamados assumidos |
+| `/resolver-chamado/:id` | Agente | Registro da resolução |
+| `/administracao` | Administrador | Painel administrativo |
+| `/admin/categorias` | Administrador | Gerenciamento de categorias |
+| `/admin/regioes` | Administrador | Gerenciamento de regiões |
+| `/acesso-negado` | Público | Aviso de acesso negado |
 
-**URL da API:**  
+A aplicação também possui tratamento para rotas inexistentes.
+
+## 8. Integração com a API Java
+
+A comunicação entre o frontend e o backend é realizada por meio de `src/services/api.ts`, utilizando a Fetch API.
+
+A aplicação consome os serviços REST desenvolvidos em Java e Spring Boot, permitindo:
+
+- Consultar chamados registrados.
+- Cadastrar novas ocorrências.
+- Editar chamados abertos.
+- Consultar chamados por usuário.
+- Realizar cadastro e autenticação.
+- Consultar e gerenciar categorias e regiões.
+- Assumir chamados disponíveis.
+- Registrar a conclusão dos atendimentos.
+- Consultar históricos de resolução.
+
+O backend é responsável pela aplicação das regras de negócio e persistência dos dados em Oracle Database, utilizando JDBC.
+
+### Autenticação e perfis
+
+A aplicação possui três perfis de acesso:
+
+- **CIDADAO:** abertura e acompanhamento de ocorrências.
+- **AGENTE:** atendimento e resolução de chamados.
+- **ADMIN:** gerenciamento dos cadastros administrativos.
+
+Os dados da sessão são armazenados no `sessionStorage`, e a navegação é apresentada conforme o perfil do usuário.
+
+A proteção de rotas no frontend organiza o acesso às páginas, mas as operações também precisam ser autorizadas pelo backend.
+
+### Inteligência artificial
+
+O CidadeAtiva também contempla uma solução de inteligência artificial desenvolvida em Python para classificação de riscos urbanos e identificação de regiões críticas.
+
+Esse módulo é desenvolvido separadamente e não possui integração direta com o frontend React.
+
+**API publicada:**  
 https://cidadeativa-gs.onrender.com
 
-## 8. Responsividade e acessibilidade
+## 9. Responsividade e acessibilidade
 
-O CidadeAtiva foi desenvolvido para oferecer navegação em diferentes dispositivos, utilizando layouts flexíveis, grids e regras de responsividade.
+O CidadeAtiva utiliza estilos responsivos para adaptação da interface a diferentes dispositivos, incluindo computadores, tablets e smartphones.
 
-As resoluções previstas para validação são:
+A aplicação contempla:
 
-- Mobile: 390 × 844 px.
-- Tablet: 768 × 1024 px.
-- Desktop: 1440 × 900 px.
+- Layouts flexíveis.
+- Formulários com identificação dos campos.
+- Mensagens de erro.
+- Indicadores de carregamento.
+- Estados visuais de interação.
+- Indicadores de foco para navegação por teclado.
+- Organização da interface por perfil de usuário.
 
-A interface também contempla identificação de campos de formulário, mensagens de erro, estados de carregamento e indicadores visuais de foco para navegação por teclado.
+A conformidade integral com normas de acessibilidade depende de validações específicas.
 
-## 9. Integrantes
+## 10. Integrantes
 
 | Nome | RM | Turma |
 |---|---|---|
@@ -218,20 +322,18 @@ A interface também contempla identificação de campos de formulário, mensagen
 - GitHub: https://github.com/rodrigobertolla
 - LinkedIn: https://www.linkedin.com/in/rodrigo-bertolla-silveira-4475a43b5/
 
-## 10. Links do projeto
+## 11. Links do projeto
 
 | Recurso | Endereço |
 |---|---|
-| Frontend — Vercel | https://cidade-ativa-gs.vercel.app |
+| Frontend — Vercel | https://cidade-ativa-gs.vercel.app/ |
 | Backend — Render | https://cidadeativa-gs.onrender.com |
-| GitHub — Frontend | ADICIONAR_LINK_DO_REPOSITORIO |
-| Vídeo — YouTube | ADICIONAR_LINK_DO_VIDEO |
+| Repositório — GitHub | https://github.com/brunohpdev/Cidade-Ativa |
+| Vídeo de demonstração — YouTube | https://youtu.be/b0JhY2cvRwQ |
 
-O vídeo de demonstração da disciplina de Front-end Design Engineering deverá apresentar a aplicação publicada, sua navegação e a integração com a API Java, respeitando a duração máxima de **3 minutos**.
+## 12. Contato
 
-## 11. Contato
-
-Para dúvidas sobre o projeto, sugestões ou informações relacionadas ao desenvolvimento, entre em contato com a equipe **DevForce** por meio da página de Contato da aplicação ou dos perfis profissionais dos integrantes.
+A página de Contato permite que o visitante prepare uma mensagem para a equipe DevForce utilizando seu aplicativo de e-mail.
 
 **Página de Contato:**  
 https://cidade-ativa-gs.vercel.app/contato
