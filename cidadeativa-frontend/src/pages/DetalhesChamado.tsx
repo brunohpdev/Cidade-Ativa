@@ -1,21 +1,17 @@
 
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import {
-  ArrowLeft,
-  MapPin,
-  CalendarDays
-} from "lucide-react";
+import { ArrowLeft, MapPin, CalendarDays } from "lucide-react";
 
 import { api } from "../services/api";
-
-import type {
-  Chamado,
-  Categoria,
-  Regiao
-} from "../types/Chamado";
-
+import type { Chamado, Categoria, Regiao } from "../types/Chamado";
 import type { Historico } from "../types/Historico";
+
+const statusClasses: Record<string, string> = {
+  ABERTO: "bg-amber-100 text-amber-800",
+  EM_ANDAMENTO: "bg-blue-100 text-blue-800",
+  RESOLVIDO: "bg-green-100 text-green-800"
+};
 
 function DetalhesChamado() {
   const { id } = useParams();
@@ -34,17 +30,13 @@ function DetalhesChamado() {
       setErro("");
 
       try {
-        const [
-          dadosChamado,
-          categorias,
-          regioes,
-          dadosHistorico
-        ] = await Promise.all([
-          api(`/api/chamados/${id}`),
-          api("/api/categorias"),
-          api("/api/regioes"),
-          api(`/api/chamados/${id}/historico`)
-        ]);
+        const [dadosChamado, categorias, regioes, dadosHistorico] =
+          await Promise.all([
+            api(`/api/chamados/${id}`),
+            api("/api/categorias"),
+            api("/api/regioes"),
+            api(`/api/chamados/${id}/historico`)
+          ]);
 
         const chamadoAtual = dadosChamado as Chamado;
 
@@ -57,22 +49,15 @@ function DetalhesChamado() {
         );
 
         setChamado(chamadoAtual);
-
-        setCategoria(
-          categoriaAtual?.nmCategoria ?? "Não informada"
-        );
-
+        setCategoria(categoriaAtual?.nmCategoria ?? "Não informada");
         setRegiao(
           regiaoAtual
             ? `${regiaoAtual.nmBairro} - ${regiaoAtual.nmCidade}`
             : "Não informada"
         );
-
         setHistorico(dadosHistorico);
       } catch {
-        setErro(
-          "Não foi possível carregar os detalhes do chamado."
-        );
+        setErro("Não foi possível carregar os detalhes do chamado.");
       } finally {
         setCarregando(false);
       }
@@ -87,51 +72,46 @@ function DetalhesChamado() {
   }, [id]);
 
   function nomeStatus(status: string) {
-    if (status === "ABERTO") {
-      return "Aberto";
-    }
-
-    if (status === "EM_ANDAMENTO") {
-      return "Em andamento";
-    }
-
-    if (status === "RESOLVIDO") {
-      return "Resolvido";
-    }
-
+    if (status === "ABERTO") return "Aberto";
+    if (status === "EM_ANDAMENTO") return "Em andamento";
+    if (status === "RESOLVIDO") return "Resolvido";
     return status;
   }
 
   function formatarData(data: string | null) {
-    if (!data) {
-      return "Não informada";
-    }
+    if (!data) return "Não informada";
 
     const dataConvertida = new Date(data);
 
-    if (Number.isNaN(dataConvertida.getTime())) {
-      return data;
-    }
+    if (Number.isNaN(dataConvertida.getTime())) return data;
 
     return dataConvertida.toLocaleDateString("pt-BR");
   }
 
+  const container = "mx-auto w-full max-w-5xl px-4 py-10 sm:px-6";
+  const voltar =
+    "mb-7 inline-flex items-center gap-2 font-semibold text-teal-700 hover:underline";
+  const card =
+    "mb-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-8";
+
   if (carregando) {
     return (
-      <main className="detalhes-container">
-        <p>Carregando chamado...</p>
+      <main className={container}>
+        <p role="status" className="text-slate-600">
+          Carregando chamado...
+        </p>
       </main>
     );
   }
 
   if (erro || !chamado) {
     return (
-      <main className="detalhes-container">
-        <p className="erro">
+      <main className={container}>
+        <p role="alert" className="mb-5 rounded-lg bg-red-50 p-4 text-red-700">
           {erro || "Chamado não encontrado."}
         </p>
 
-        <Link to="/chamados" className="link-voltar">
+        <Link to="/chamados" className={voltar}>
           <ArrowLeft size={18} />
           Voltar para chamados
         </Link>
@@ -140,79 +120,98 @@ function DetalhesChamado() {
   }
 
   return (
-    <main className="detalhes-container">
-      <Link to="/chamados" className="link-voltar">
+    <main className={container}>
+      <Link to="/chamados" className={voltar}>
         <ArrowLeft size={18} />
         Voltar para chamados
       </Link>
 
-      <section className="detalhes-card">
-        <div className="detalhes-topo">
-          <div>
-            <p className="protocolo">
+      <section className={card}>
+        <div className="mb-8 flex flex-wrap items-start justify-between gap-4">
+          <div className="min-w-0">
+            <p className="mb-2 break-all text-sm font-semibold text-slate-500">
               Protocolo: {chamado.nrProtocolo}
             </p>
 
-            <h1>{categoria}</h1>
+            <h1 className="text-3xl font-bold text-slate-900">
+              {categoria}
+            </h1>
           </div>
 
           <span
-            className={`status status-${chamado.stChamado.toLowerCase()}`}
+            className={`rounded-full px-3 py-2 text-sm font-bold ${
+              statusClasses[chamado.stChamado] ??
+              "bg-slate-100 text-slate-700"
+            }`}
           >
             {nomeStatus(chamado.stChamado)}
           </span>
         </div>
 
-        <h2>Descrição do problema</h2>
+        <h2 className="mb-4 text-xl font-bold text-slate-900">
+          Descrição do problema
+        </h2>
 
-        <p>{chamado.dsDescricao}</p>
+        <p className="mb-8 break-words leading-8 text-slate-600">
+          {chamado.dsDescricao}
+        </p>
 
-        <div className="detalhes-informacoes">
-          <p>
-            <MapPin size={18} />
-            <strong>Região:</strong> {regiao}
+        <div className="space-y-5 border-t border-slate-200 pt-6 text-slate-600">
+          <p className="flex flex-wrap items-start gap-2">
+            <MapPin size={18} className="mt-1 shrink-0 text-teal-700" />
+            <strong className="text-slate-900">Região:</strong>
+            {regiao}
           </p>
 
-          <p>
-            <MapPin size={18} />
-            <strong>Endereço:</strong> {chamado.dsEndereco}
+          <p className="flex flex-wrap items-start gap-2">
+            <MapPin size={18} className="mt-1 shrink-0 text-teal-700" />
+            <strong className="text-slate-900">Endereço:</strong>
+            {chamado.dsEndereco}
           </p>
 
-          <p>
-            <CalendarDays size={18} />
-            <strong>Abertura:</strong>{" "}
+          <p className="flex flex-wrap items-start gap-2">
+            <CalendarDays size={18} className="mt-1 shrink-0 text-teal-700" />
+            <strong className="text-slate-900">Abertura:</strong>
             {formatarData(chamado.dtAbertura)}
           </p>
 
           {chamado.dtConclusao && (
-            <p>
-              <CalendarDays size={18} />
-              <strong>Conclusão:</strong>{" "}
+            <p className="flex flex-wrap items-start gap-2">
+              <CalendarDays size={18} className="mt-1 shrink-0 text-teal-700" />
+              <strong className="text-slate-900">Conclusão:</strong>
               {formatarData(chamado.dtConclusao)}
             </p>
           )}
         </div>
       </section>
 
-      <section className="detalhes-card">
-        <h2>Histórico de resolução</h2>
+      <section className={card}>
+        <h2 className="mb-6 text-2xl font-bold text-slate-900">
+          Histórico de resolução
+        </h2>
 
         {historico.length === 0 ? (
-          <p>Ainda não há resolução registrada.</p>
+          <p className="text-slate-600">
+            Ainda não há resolução registrada.
+          </p>
         ) : (
-          historico.map((item) => (
-            <article
-              className="historico-item"
-              key={item.cdHistorico}
-            >
-              <p>
-                <strong>Status:</strong>{" "}
-                {nomeStatus(item.stNovo)}
-              </p>
+          <div className="space-y-4">
+            {historico.map((item) => (
+              <article
+                key={item.cdHistorico}
+                className="rounded-xl border border-slate-200 bg-slate-50 p-5"
+              >
+                <p className="mb-3">
+                  <strong className="text-slate-900">Status:</strong>{" "}
+                  {nomeStatus(item.stNovo)}
+                </p>
 
-              <p>{item.dsObservacao}</p>
-            </article>
-          ))
+                <p className="break-words text-slate-600">
+                  {item.dsObservacao}
+                </p>
+              </article>
+            ))}
+          </div>
         )}
       </section>
     </main>
