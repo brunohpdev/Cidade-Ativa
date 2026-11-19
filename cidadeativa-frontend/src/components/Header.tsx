@@ -1,16 +1,16 @@
 
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { obterUsuario } from "../services/usuarioLogado";
 
 function Header() {
   const navigate = useNavigate();
+  useLocation();
+
   const usuario = obterUsuario();
 
   function sair() {
     sessionStorage.removeItem("usuario");
-
-    navigate("/login");
-    window.location.reload();
+    navigate("/login", { replace: true });
   }
 
   return (
