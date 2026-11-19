@@ -1,12 +1,17 @@
 
+import { useMemo } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { obterUsuario } from "../services/usuarioLogado";
 
 function Header() {
   const navigate = useNavigate();
-  useLocation();
+  const location = useLocation();
 
-  const usuario = obterUsuario();
+  // Atualiza o usuario ao navegar entre as paginas
+  const usuario = useMemo(
+    () => obterUsuario(),
+    [location.key]
+  );
 
   function sair() {
     sessionStorage.removeItem("usuario");
@@ -33,7 +38,6 @@ function Header() {
             Chamados
           </NavLink>
 
-          
           <NavLink to="/sobre">
             Sobre
           </NavLink>
@@ -49,8 +53,6 @@ function Header() {
           <NavLink to="/contato">
             Contato
           </NavLink>
-
-
 
           {/* Links do cidadao */}
           {usuario?.tpUsuario === "CIDADAO" && (
