@@ -124,7 +124,7 @@ function Contato() {
           {aviso && <p className="contato-aviso" role="status">{aviso}</p>}
 
           <button type="submit" className="institucional-botao">
-            Preparar e-mail
+            Enviar mensagem
           </button>
         </form>
       </section>
